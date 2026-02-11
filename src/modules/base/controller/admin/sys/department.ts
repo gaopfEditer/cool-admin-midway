@@ -1,5 +1,11 @@
-import { ALL, Body, Inject, Post, Provide } from '@midwayjs/core';
-import { CoolController, BaseController } from '@cool-midway/core';
+import { ALL, Body, Inject, Post, Provide, Get } from '@midwayjs/core';
+import {
+  CoolController,
+  BaseController,
+  CoolUrlTag,
+  CoolTag,
+  TagTypes,
+} from '@cool-midway/core';
 import { BaseSysDepartmentEntity } from '../../../entity/sys/department';
 import { BaseSysDepartmentService } from '../../../service/sys/department';
 
@@ -17,6 +23,7 @@ import { BaseSysDepartmentService } from '../../../service/sys/department';
     };
   },
 })
+@CoolUrlTag() // 必须添加这个装饰器，@CoolTag 才能生效
 export class BaseDepartmentController extends BaseController {
   @Inject()
   baseDepartmentService: BaseSysDepartmentService;
@@ -28,5 +35,17 @@ export class BaseDepartmentController extends BaseController {
   async order(@Body(ALL) params: any) {
     await this.baseDepartmentService.order(params);
     return this.ok();
+  }
+
+  /**
+   * 测试接口 - 不需要token验证
+   */
+  @CoolTag(TagTypes.IGNORE_TOKEN)
+  @Get('/test', { summary: '测试接口' })
+  async test() {
+    return this.ok({
+      message: '这是一个不需要token验证的测试接口',
+      timestamp: new Date().toISOString(),
+    });
   }
 }
