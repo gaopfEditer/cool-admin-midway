@@ -1,4 +1,4 @@
-import { BaseEntity, transformerJson } from '../base';
+import { BaseEntity, transformerJson } from '../../../base/entity/base';
 import { Column, Index, Entity } from 'typeorm';
 
 /**
